@@ -23,7 +23,7 @@ export default function ScheduleQuestion(props:Props) {
 
     const handleClick = () => {
 
-        if(!date) {
+        if(!date || date == "Invalid Date") {
             setError(() => "Please select a date :<")
             return
         }
