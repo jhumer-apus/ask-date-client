@@ -5,7 +5,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).json({ message: "Method not allowed" });
 
-  const { to, subject, text } = req.body;
+  const { to, message } = req.body;
 
   try {
     // Gmail transporter
@@ -20,8 +20,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await transporter.sendMail({
       from: process.env.GMAIL_USER,
       to,
-      subject,
-      text,
+      subject: `Hello Shahara`,
+      text: message,
     });
 
     res.status(200).json({ message: "Email sent successfully!" });

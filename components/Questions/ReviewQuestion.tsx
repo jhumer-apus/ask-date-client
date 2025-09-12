@@ -10,20 +10,16 @@ interface Props {
 interface MailOptionType {
     email: string,
     message: string,
-    girl_name: string | null | undefined
 }
 
 export default function ReviewQuestion(props: Props) {
     const { answer, setCurrentQuestion } = props;
-    const girlName = process.env.NEXT_PUBLIC_GIRL_NAME
-    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
     const [error, setError] = useState<string>("")
 
     const [mailOptions, setMailOptions] = useState<MailOptionType>({
         email: "",
         message: "",
-        girl_name: girlName
     })
 
     const drinks = answer.drinks.join(", ");
@@ -36,23 +32,18 @@ export default function ReviewQuestion(props: Props) {
 
         const message = `
             1. So first we play ${answer.activity}
-            
             2. Then for recovery we drink some of this ${drinks}
-            
             3. Our meal consists of either ${meals}
-            
             4. Lastly, we are going to hang out at ${answer.hangout}
-            
             On ${answer.date}
         `;
 
         const payload = {
-            email: mailOptions.email,
+            to: mailOptions.email,
             message: message,
-            girl_name: girlName 
         }
 
-        await axios.post(backendUrl + "/send-mail", payload)
+        await axios.post("/api/send-email", payload)
             .then(() => {
                 console.log("Success")
                 setIsSubmitting(() => false)
